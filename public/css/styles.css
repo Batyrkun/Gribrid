@@ -15,7 +15,7 @@ h2 {
 }
 
 body {
-  background-color: #ff9c68;
+  background-color: #08d9d6;
 }
 
 .container-fluid {
@@ -30,44 +30,35 @@ body {
   font-size: 20px;
 }
 
-.box_1 {
+.box {
+  box-shadow: 5px 5px 15px -5px rgba(0, 0, 0, 0.3);
+  border: 3px solid #252a34;
+  border-radius: 5px;
+
   position: relative;
   display: inline-block;
-  background-color: #47e4bb;
+  background-color: #eaeaea;
+
+  width: 350px;
+  font-size: 25px;
+  text-align: center;
+  font-family: sans-serif;
+  margin-bottom: 5%;
+}
+#first_box.box {
   margin-left: 10%;
-  width: 350px;
-  font-size: 25px;
-  text-align: center;
-  font-family: sans-serif;
-  margin-bottom: 5%;
 }
 
-.box_2 {
-  position: relative;
-  display: inline-block;
-  background-color: #47e4bb;
+#second_box.box {
   margin-left: 5%;
-  width: 350px;
-  font-size: 25px;
-  text-align: center;
-  font-family: sans-serif;
-  margin-bottom: 5%;
 }
 
-.box_3 {
-  position: relative;
-  display: inline-block;
-  background-color: #47e4bb;
+#third_box.box {
   margin-left: 5%;
-  width: 350px;
-  font-size: 25px;
-  text-align: center;
-  font-family: sans-serif;
-  margin-bottom: 5%;
 }
 
 .image {
-  width: 350px;
+  width: 343px;
   height: 400px;
 }
 
@@ -78,11 +69,4 @@ body {
 
 .centered {
   margin-left: 350px;
-}
-
-.secret-text {
-  text-align: center;
-  font-size: 2rem;
-  color: #fff;
-  background-color: #000;
 }

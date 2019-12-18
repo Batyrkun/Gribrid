@@ -18,6 +18,9 @@
     "ejs": "^3.0.1",
     "express": "^4.17.1",
     "mongoose": "^5.8.1",
-    "mongoose-encryption": "^2.0.2"
+    "mongoose-encryption": "^2.0.2",
+    "mongoose-findorcreate": "^3.0.0",
+    "passport": "^0.4.1",
+    "passport-google-oauth20": "^2.0.0"
   }
 }

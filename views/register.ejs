@@ -40,8 +40,8 @@
     </div>
   </div>
 
-
-  <div class="row centered">
+<div class="container mt-5">
+  <div class="row">
     <div class="col-sm-8">
       <div class="card">
         <div class="card-body">
@@ -58,10 +58,22 @@
             </div>
             <button type="submit" class="btn btn-dark">Register</button>
           </form>
-
         </div>
       </div>
     </div>
+
+    <div class="col-sm-4">
+      <div class="card social-block">
+        <div class="card-body">
+          <a class="btn btn-block" href="/auth/google" role="button">
+            <i class="fa fa-google" aria-hidden="true"></i>
+            Sign Up with Google
+          </a>
+        </div>
+      </div>
+    </div>
+
   </div>
+</div>
 
   <%- include("partials/footer") -%>

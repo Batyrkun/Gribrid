@@ -5,7 +5,17 @@ const app = express();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const encrypt = require("mongoose-encryption");
+const passport = require("passport");
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const findOrCreate = require("mongoose-findorcreate");
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
 
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
+app.use(passport.initialize());
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({
   extended: true
@@ -19,8 +29,28 @@ const userSchema = new mongoose.Schema({
   email: String,
   password: String
 });
-userSchema.plugin(encrypt, { secret: process.env.SECRET, encryptedFields: ['password'] });
+userSchema.plugin(encrypt, {
+  secret: process.env.SECRET,
+  encryptedFields: ['password']
+});
+userSchema.plugin(findOrCreate);
 const User = new mongoose.model("User", userSchema);
+
+
+passport.use(new GoogleStrategy({
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    callbackURL: "http://localhost:3000/auth/google/gribrid",
+    userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    User.findOrCreate({
+      googleId: profile.id
+    }, function(err, user) {
+      return cb(err, user);
+    });
+  }
+));
 
 app.get("/", function(req, res) {
   res.render("home");
@@ -33,6 +63,19 @@ app.get("/register", function(req, res) {
 app.get("/login", function(req, res) {
   res.render("login");
 });
+
+app.get('/auth/google',
+  passport.authenticate('google', {
+    scope: ['profile']
+  }));
+
+app.get('/auth/google/gribrid',
+  passport.authenticate('google', {
+    failureRedirect: '/login'
+  }),
+  function(req, res) {
+    res.redirect('/about');
+  });
 
 app.get("/shop", function(req, res) {
   res.render("shop");
@@ -56,16 +99,18 @@ app.post("/register", function(req, res) {
   });
 });
 
-app.post("/login", function(req, res){
+app.post("/login", function(req, res) {
   const username = req.body.username;
   const password = req.body.password;
-  User.findOne({email: username}, function(err, foundUser){
-    if (err){
+  User.findOne({
+    email: username
+  }, function(err, foundUser) {
+    if (err) {
       console.log(err);
       res.redirect("/login");
     } else {
-      if (foundUser){
-        if (foundUser.password === password){
+      if (foundUser) {
+        if (foundUser.password === password) {
           res.redirect("about");
         } else {
           res.redirect("/login");

@@ -54,7 +54,8 @@ mongoose.set('useCreateIndex', true);
 //creating new schema
 const userSchema = new mongoose.Schema({
   email: String,
-  password: String
+  password: String,
+  googleId: String
 });
 
 //adding plugins to the schema

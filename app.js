@@ -7,6 +7,8 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const findOrCreate = require('mongoose-findorcreate');
 
 const app = express();
 
@@ -27,6 +29,19 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+passport.use(new GoogleStrategy({
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    callbackURL: "https://gribrid.herokuapp.com/auth/google/gribrid",
+    userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo'
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    User.findOrCreate({ googleId: profile.id }, function (err, user) {
+      return cb(err, user);
+    });
+  }
+));
+
 //connecting server to mongodb atlas
 mongoose.connect("mongodb+srv://admin-batyr:8ayaNTDd5AQ4zSw@cluster0-zdgrf.mongodb.net/userdata", {
   useUnifiedTopology: true,
@@ -42,8 +57,9 @@ const userSchema = new mongoose.Schema({
   password: String
 });
 
-//adding plugin to the schema
+//adding plugins to the schema
 userSchema.plugin(passportLocalMongoose);
+userSchema.plugin(findOrCreate);
 
 //creating the database "User" with the collection "users" via the schema
 const User = new mongoose.model("User", userSchema);
@@ -51,9 +67,15 @@ const User = new mongoose.model("User", userSchema);
 //passport-local-mongoose adds the method that is responsible for the setup of passport-local LocalStrategy
 passport.use(User.createStrategy());
 
-//passport session support
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+//passport session support(local and google)
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
 
 app.get("/", function(req, res) {
   res.render("home");
@@ -88,6 +110,17 @@ app.get("/logout", function(req, res){
   req.logout();
   res.redirect("/");
 });
+
+app.get("/auth/google",
+  passport.authenticate("google", { scope: ['profile'] })
+);
+
+app.get('/auth/google/gribrid',
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  function(req, res) {
+    // Successful authentication, redirect to about page.
+    res.redirect('/about');
+  });
 
 app.post("/register", function(req, res) {
   //passport-local-mongoose adds a user data to the database

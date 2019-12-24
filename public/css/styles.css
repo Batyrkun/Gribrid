@@ -30,31 +30,44 @@ body {
   font-size: 20px;
 }
 
+.navContainer {
+  display: flex;
+  flex-direction: row-reverse;
+  margin-left: 12%;
+  margin-right: 12%;
+}
+
 .box {
   box-shadow: 5px 5px 15px -5px rgba(0, 0, 0, 0.3);
   border: 3px solid #252a34;
   border-radius: 5px;
-
-  position: relative;
-  display: inline-block;
   background-color: #eaeaea;
-
-  width: 350px;
   font-size: 25px;
   text-align: center;
   font-family: sans-serif;
-  margin-bottom: 5%;
-}
-#first_box.box {
-  margin-left: 10%;
+  margin: 2%;
 }
 
-#second_box.box {
-  margin-left: 5%;
+.limonka {
+  background-image: url("/images/Limonka.jpg");
 }
 
-#third_box.box {
-  margin-left: 5%;
+.pink {
+  background-image: url("/images/Rose.jpg");
+}
+
+.king {
+  background-image: url("/images/Common.jpg");
+}
+
+.imageContainer {
+  margin: 5%;
+  height: 400px;
+  background-size: cover;
+}
+
+.boxOrganizer {
+  display: inline-block;
 }
 
 .image {
@@ -62,11 +75,6 @@ body {
   height: 400px;
 }
 
-.sd {
-  margin-left: 66.7%;
-  width: 350px;
-}
-
 .centered {
-  margin-left: 250px;
+  text-align: center;
 }

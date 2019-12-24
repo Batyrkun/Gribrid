@@ -1,61 +1,77 @@
 <%- include("partials/header") -%>
 
-        <h1>Shop</h1>
-      </div>
-    </div>
-  </div>
+<h1>Shop</h1>
+</div>
+</div>
+</div>
 
-  <form class="sd" action="/search" method="post">
-    <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
-      <div class="input-group">
-        <input type="search" list="mushrooms" name="q" maxlength="40" required placeholder="What're you searching for?" aria-describedby="button-addon1" class="form-control border-0 bg-light">
-        <div class="input-group-append">
-          <button id="button-addon1" type="submit" class="btn btn-link text-primary"><i class="fa fa-search"></i></button>
+<div class="navContainer row">
+  <div class="col-lg-4 col-md-6 col-sm-6">
+    <form action="/search" method="post">
+      <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
+        <div class="input-group">
+          <input type="search" list="mushrooms" name="q" maxlength="40" required placeholder="What're you searching for?" aria-describedby="button-addon1" class="form-control border-0 bg-light">
+          <div class="input-group-append">
+            <button id="button-addon1" type="submit" class="btn btn-link text-primary"><i class="fa fa-search"></i></button>
+          </div>
         </div>
       </div>
+    </form>
+  </div>
+</div>
+
+<datalist id="mushrooms">
+  <option value="golden oyster mushroom">
+  <option value="king oyster mushroom">
+  <option value="pink oyster mushroom">
+</datalist>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-4 col-md-6 col-sm-12">
+      <div class="box">
+        <p>Golden Oyster Mushroom</p>
+        <hr>
+        <div class="limonka imageContainer">
+        </div>
+        <hr>
+        <ul>
+          <li>a source of lipid-lowering drugs</li>
+          <li>$5.23 USD per kg</li>
+        </ul>
+        <a href="">Learn More</a>
+      </div>
     </div>
-  </form>
-
-  <datalist id="mushrooms">
-    <option value="golden oyster mushroom">
-    <option value="king oyster mushroom">
-    <option value="pink oyster mushroom">
-  </datalist>
-
-  <div class="box" id="first_box">
-    <p>Golden Oyster Mushroom</p>
-    <hr>
-    <img src="images\Limonka.jpg" alt="limonka" class="image">
-    <hr>
-    <ul>
-      <li>a source of lipid-lowering drugs</li>
-      <li>$5.23 USD per kg</li>
-    </ul>
-    <a href="">Learn More</a>
+    <div class="col-lg-4 col-md-6 col-sm-12">
+      <div class="box">
+        <p>Pink Oyster Mushroom</p>
+        <hr>
+        <div class="pink imageContainer">
+        </div>
+        <hr>
+        <ul>
+          <li>delicious and look incredible</li>
+          <li>$7.41 USD per kg</li>
+        </ul>
+        <a href="">Learn More</a>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-12">
+      <div class="box">
+        <p>King Oyster Mushroom</p>
+        <hr>
+        <div class="king imageContainer">
+        </div>
+        <hr>
+        <ul>
+          <li>cholesterol-lowering dietary agent</li>
+          <li>$8.18 USD per kg</li>
+        </ul>
+        <a href="">Learn More</a>
+      </div>
+    </div>
   </div>
+</div>
 
-  <div class="box" id="second_box">
-    <p>Pink Oyster Mushroom</p>
-    <hr>
-    <img src="images\Rose.jpg" alt="rose" class="image">
-    <hr>
-    <ul>
-      <li>delicious and look incredible</li>
-      <li>$7.41 USD per kg</li>
-    </ul>
-    <a href="">Learn More</a>
-  </div>
-
-  <div class="box" id="third_box">
-    <p>King Oyster Mushroom</p>
-    <hr>
-    <img src="images\Common.jpg" alt="common" class="image">
-    <hr>
-    <ul>
-      <li>cholesterol-lowering dietary agent</li>
-      <li>$8.18 USD per kg</li>
-    </ul>
-    <a href="">Learn More</a>
-  </div>
 
 <%- include("partials/footer") -%>

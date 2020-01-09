@@ -87,6 +87,13 @@ var li1 = "";
 var li2 = "";
 var display = "";
 
+//arrays for sorting
+var productNames = [
+  ["Golden Oyster Mushroom", "limonka imageContainer", "a source of lipid-lowering drugs", "$5.23 USD per kg"],
+  ["Pink Oyster Mushroom", "pink imageContainer", "delicious and look incredible", "$7.41 USD per kg"],
+  ["King Oyster Mushroom", "king imageContainer", "cholesterol-lowering dietary agent", "$8.18 USD per kg"]
+];
+
 app.get("/", function(req, res) {
   res.render("home");
 });
@@ -210,6 +217,16 @@ app.post("/search", function(req, res) {
     li2: li2,
     display: display
   });
+});
+
+app.post("/sort", function(req, res) {
+  var sortType = req.body.selectedOption;
+  if (sortType === "A-Z") {
+    productNames.sort();
+    res.render("shop_sort_by_a-z", {
+      productNames: productNames
+    });
+  }
 });
 
 let port = process.env.PORT;

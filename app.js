@@ -53,7 +53,7 @@ mongoose.connect("mongodb+srv://admin-batyr:8ayaNTDd5AQ4zSw@cluster0-zdgrf.mongo
 //upgrading the deprecated method in mongoose
 mongoose.set('useCreateIndex', true);
 
-//creating new schema
+//creating new schema about users
 const userSchema = new mongoose.Schema({
   email: String,
   password: String,
@@ -80,6 +80,17 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
+//new db for ratings
+var ratingSchema = new mongoose.Schema({
+  name: String,
+  rating: Number
+});
+var Rating = new mongoose.model('Rating', ratingSchema);
+var silence = new Rating({
+  name: "King Oyster Mushroom",
+  rating: 6.5
+});
+
 //variables for searching
 var phrase = "";
 var box_class = "";
@@ -87,13 +98,23 @@ var li1 = "";
 var li2 = "";
 var display = "";
 
-//arrays for sorting
+//array for sorting
 const productNames = [
-  ["Golden Oyster Mushroom", "limonka imageContainer", "a source of lipid-lowering drugs", "$5.23 USD per kg", "7.5"],
-  ["Pink Oyster Mushroom", "pink imageContainer", "delicious and look incredible", "$7.41 USD per kg", "8.0"],
-  ["King Oyster Mushroom", "king imageContainer", "cholesterol-lowering dietary agent", "$8.18 USD per kg", "6.5"]
+  ["Golden Oyster Mushroom", "limonka imageContainer", "a source of lipid-lowering drugs", "$5.23 USD per kg"],
+  ["King Oyster Mushroom", "king imageContainer", "cholesterol-lowering agent", "$8.18 USD per kg"],
+  ["Pink Oyster Mushroom", "pink imageContainer", "delicious and look incredible", "$7.41 USD per kg"]  
 ];
 
+//pushing ratings from mongodb to the array
+productNames.forEach(function(item) {
+  Rating.find({
+    name: item[0]
+  }, function(err, docs) {
+    docs.forEach(function(doc) {
+      item.push(doc.rating.toString());
+    });
+  });
+});
 
 app.get("/", function(req, res) {
   res.render("home");

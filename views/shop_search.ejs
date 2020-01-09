@@ -26,6 +26,18 @@
   <option value="pink oyster mushroom">
 </datalist>
 
+<div class="navContainer row">
+  <div class="col-lg-4 col-md-6 col-sm-6">
+    <form class="" action="/sort" method="post">
+      <select class="browser-default custom-select" name="selectedOption" onchange="this.form.submit()">
+        <option selected disabled value="">How to sort?</option>
+        <option value="A-Z">A-Z</option>
+        <option value="Rating">Rating</option>
+      </select>
+      </form>
+  </div>
+</div>
+
 <div class="container-fluid">
   <div class="row">
     <div class="col-lg-4 col-md-6 col-sm-12">
@@ -42,7 +54,7 @@
         <hr>
         <p><%= rating %> out of 10</p>
         <hr>
-        <a href="">Learn More</a>
+        <button type="button" class="btn btn-info btn-lg btnBottom btn-block ">Learn More</button>
       </div>
     </div>
   </div>

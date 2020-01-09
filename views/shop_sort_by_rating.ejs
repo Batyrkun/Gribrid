@@ -26,26 +26,42 @@
   <option value="pink oyster mushroom">
 </datalist>
 
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-lg-4 col-md-6 col-sm-12">
-      <div style=" <%= display %> " class="box">
-        <p class="productName"> <%= phrase %> </p>
-        <hr>
-        <div class="<%= box_class %>">
-        </div>
-        <hr>
-        <ul>
-          <li><%= li1 %></li>
-          <li><%= li2 %></li>
-        </ul>
-        <hr>
-        <p><%= rating %> out of 10</p>
-        <hr>
-        <a href="">Learn More</a>
-      </div>
-    </div>
+<div class="navContainer row">
+  <div class="col-lg-4 col-md-6 col-sm-6">
+    <form class="" action="/sort" method="post">
+      <select class="browser-default custom-select" name="selectedOption" onchange="this.form.submit()">
+        <option value="A-Z">A-Z</option>
+        <option selected disabled value="Rating">Rating</option>
+      </select>
+    </form>
   </div>
 </div>
+
+<div class="container-fluid">
+  <div class="row">
+    <% productNamesSortedRating.forEach(myFunction);
+      function myFunction(item) { %>
+        <div class="col-lg-4 col-md-6 col-sm-12">
+          <div class="box">
+            <p class="productName"><%= item[0] %></p>
+            <hr>
+            <div class="<%= item[1] %>">
+            </div>
+            <hr>
+            <ul>
+              <li><%= item[2] %></li>
+              <li><%= item[3] %></li>
+            </ul>
+            <hr>
+            <p><%= item[4] %> out of 10</p>
+            <hr>
+            <a href="">Learn More</a>
+          </div>
+        </div>
+      <% } %>
+  </div>
+</div>
+
+
 
 <%- include("partials/footer") -%>

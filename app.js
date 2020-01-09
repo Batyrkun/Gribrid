@@ -88,11 +88,12 @@ var li2 = "";
 var display = "";
 
 //arrays for sorting
-var productNames = [
-  ["Golden Oyster Mushroom", "limonka imageContainer", "a source of lipid-lowering drugs", "$5.23 USD per kg"],
-  ["Pink Oyster Mushroom", "pink imageContainer", "delicious and look incredible", "$7.41 USD per kg"],
-  ["King Oyster Mushroom", "king imageContainer", "cholesterol-lowering dietary agent", "$8.18 USD per kg"]
+const productNames = [
+  ["Golden Oyster Mushroom", "limonka imageContainer", "a source of lipid-lowering drugs", "$5.23 USD per kg", "7.5"],
+  ["Pink Oyster Mushroom", "pink imageContainer", "delicious and look incredible", "$7.41 USD per kg", "8.0"],
+  ["King Oyster Mushroom", "king imageContainer", "cholesterol-lowering dietary agent", "$8.18 USD per kg", "6.5"]
 ];
+
 
 app.get("/", function(req, res) {
   res.render("home");
@@ -108,7 +109,9 @@ app.get("/login", function(req, res) {
 
 app.get("/shop", function(req, res) {
   if (req.isAuthenticated()) {
-    res.render("shop");
+    res.render("shop", {
+      productNames: productNames
+    });
   } else {
     res.redirect("/login");
   }
@@ -184,26 +187,29 @@ app.post("/search", function(req, res) {
   phrase = req.body.q.toLowerCase();
   switch (phrase) {
     case "golden oyster mushroom":
-      phrase = "Golden Oyster Mushroom";
-      box_class = "limonka imageContainer";
-      li1 = "a source of lipid-lowering drugs";
-      li2 = "$5.23 USD per kg";
+      phrase = productNames[0][0];
+      box_class = productNames[0][1];
+      li1 = productNames[0][2];
+      li2 = productNames[0][3];
+      rating = productNames[0][4];
       display = "display: inline-block;";
       break;
 
     case "king oyster mushroom":
-      phrase = "King Oyster Mushroom";
-      box_class = "king imageContainer";
-      li1 = "cholesterol-lowering dietary agent";
-      li2 = "$8.18 USD per kg";
+      phrase = productNames[1][0];
+      box_class = productNames[1][1];
+      li1 = productNames[1][2];
+      li2 = productNames[1][3];
+      rating = productNames[1][4];
       display = "display: inline-block;";
       break;
 
     case "pink oyster mushroom":
-      phrase = "Pink Oyster Mushroom";
-      box_class = "pink imageContainer";
-      li1 = "delicious and look incredible";
-      li2 = "$7.41 USD per kg";
+      phrase = productNames[2][0];
+      box_class = productNames[2][1];
+      li1 = productNames[2][2];
+      li2 = productNames[2][3];
+      rating = productNames[2][4];
       display = "display: inline-block;";
       break;
 
@@ -215,16 +221,39 @@ app.post("/search", function(req, res) {
     box_class: box_class,
     li1: li1,
     li2: li2,
-    display: display
+    display: display,
+    rating: rating
   });
 });
 
 app.post("/sort", function(req, res) {
   var sortType = req.body.selectedOption;
   if (sortType === "A-Z") {
-    productNames.sort();
+    const productNamesSortedAtoZ = Array.from(productNames);
+    productNamesSortedAtoZ.sort();
     res.render("shop_sort_by_a-z", {
-      productNames: productNames
+      productNamesSortedAtoZ: productNamesSortedAtoZ
+    });
+  }
+  if (sortType === "Rating") {
+    const productNamesSortedRating = Array.from(productNames);
+    var swapp;
+    var n = productNamesSortedRating.length - 1;
+    var x = productNamesSortedRating;
+    do {
+      swapp = false;
+      for (var i = 0; i < n; i++) {
+        if (x[i][4] < x[i + 1][4]) {
+          var temp = x[i];
+          x[i] = x[i + 1];
+          x[i + 1] = temp;
+          swapp = true;
+        }
+      }
+      n--;
+    } while (swapp);
+    res.render("shop_sort_by_rating", {
+      productNamesSortedRating: x
     });
   }
 });

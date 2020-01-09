@@ -39,7 +39,7 @@
 
 <div class="container-fluid">
   <div class="row">
-    <% productNames.forEach(myFunction);
+    <% productNamesSortedAtoZ.forEach(myFunction);
       function myFunction(item) { %>
         <div class="col-lg-4 col-md-6 col-sm-12">
           <div class="box">
@@ -52,6 +52,9 @@
               <li><%= item[2] %></li>
               <li><%= item[3] %></li>
             </ul>
+            <hr>
+            <p><%= item[4] %> out of 10</p>
+            <hr>
             <a href="">Learn More</a>
           </div>
         </div>

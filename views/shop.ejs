@@ -42,48 +42,26 @@
 
 <div class="container-fluid">
   <div class="row">
-    <div class="col-lg-4 col-md-6 col-sm-12">
-      <div class="box">
-        <p class="productName">Golden Oyster Mushroom</p>
-        <hr>
-        <div class="limonka imageContainer">
+    <% productNames.forEach(myFunction);
+      function myFunction(item) { %>
+        <div class="col-lg-4 col-md-6 col-sm-12">
+          <div class="box">
+            <p class="productName"><%= item[0] %></p>
+            <hr>
+            <div class="<%= item[1] %>">
+            </div>
+            <hr>
+            <ul>
+              <li><%= item[2] %></li>
+              <li><%= item[3] %></li>
+            </ul>
+            <hr>
+            <p><%= item[4] %> out of 10</p>
+            <hr>
+            <a href="">Learn More</a>
+          </div>
         </div>
-        <hr>
-        <ul>
-          <li>a source of lipid-lowering drugs</li>
-          <li>$5.23 USD per kg</li>
-        </ul>
-        <a href="">Learn More</a>
-      </div>
-    </div>
-    <div class="col-lg-4 col-md-6 col-sm-12">
-      <div class="box">
-        <p>Pink Oyster Mushroom</p>
-        <hr>
-        <div class="pink imageContainer">
-        </div>
-        <hr>
-        <ul>
-          <li>delicious and look incredible</li>
-          <li>$7.41 USD per kg</li>
-        </ul>
-        <a href="">Learn More</a>
-      </div>
-    </div>
-    <div class="col-lg-4 col-md-6 col-sm-12">
-      <div class="box">
-        <p>King Oyster Mushroom</p>
-        <hr>
-        <div class="king imageContainer">
-        </div>
-        <hr>
-        <ul>
-          <li>cholesterol-lowering dietary agent</li>
-          <li>$8.18 USD per kg</li>
-        </ul>
-        <a href="">Learn More</a>
-      </div>
-    </div>
+      <% } %>
   </div>
 </div>
 

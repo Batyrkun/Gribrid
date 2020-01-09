@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
- //setting up session via express-session
+//setting up session via express-session
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
@@ -36,7 +36,9 @@ passport.use(new GoogleStrategy({
     userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo'
   },
   function(accessToken, refreshToken, profile, cb) {
-    User.findOrCreate({ googleId: profile.id }, function (err, user) {
+    User.findOrCreate({
+      googleId: profile.id
+    }, function(err, user) {
       return cb(err, user);
     });
   }
@@ -78,6 +80,13 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
+//variables for searching
+var phrase = "";
+var box_class = "";
+var li1 = "";
+var li2 = "";
+var display = "";
+
 app.get("/", function(req, res) {
   res.render("home");
 });
@@ -91,33 +100,37 @@ app.get("/login", function(req, res) {
 });
 
 app.get("/shop", function(req, res) {
-  if (req.isAuthenticated()){
+  if (req.isAuthenticated()) {
     res.render("shop");
-  } else{
+  } else {
     res.redirect("/login");
   }
 });
 
 app.get("/about", function(req, res) {
-  if (req.isAuthenticated()){
+  if (req.isAuthenticated()) {
     res.render("about");
-  } else{
+  } else {
     res.redirect("/login");
   }
 });
 
-app.get("/logout", function(req, res){
+app.get("/logout", function(req, res) {
   //logout() is a method of passport
   req.logout();
   res.redirect("/");
 });
 
 app.get("/auth/google",
-  passport.authenticate("google", { scope: ['profile'] })
+  passport.authenticate("google", {
+    scope: ['profile']
+  })
 );
 
 app.get('/auth/google/gribrid',
-  passport.authenticate('google', { failureRedirect: '/login' }),
+  passport.authenticate('google', {
+    failureRedirect: '/login'
+  }),
   function(req, res) {
     // Successful authentication, redirect to about page.
     res.redirect('/about');
@@ -125,14 +138,16 @@ app.get('/auth/google/gribrid',
 
 app.post("/register", function(req, res) {
   //passport-local-mongoose adds a user data to the database
-  User.register({username: req.body.username}, req.body.password, function(err, user){
+  User.register({
+    username: req.body.username
+  }, req.body.password, function(err, user) {
     //checking for the errors
-    if (err){
+    if (err) {
       console.log(err);
       res.redirect("/register");
-    } else{
+    } else {
       //passport authenticates the user, if successful then the function is called
-      passport.authenticate("local")(req, res, function(){
+      passport.authenticate("local")(req, res, function() {
         res.redirect("/about");
       });
     }
@@ -146,12 +161,12 @@ app.post("/login", function(req, res) {
     password: req.body.password
   });
   //method login() of passport checks user data with a database
-  req.login(user, function(err){
-    if (err){
+  req.login(user, function(err) {
+    if (err) {
       console.log(err);
       res.redirect("/login");
-    } else{
-      passport.authenticate("local")(req, res, function(){
+    } else {
+      passport.authenticate("local")(req, res, function() {
         res.redirect("/about");
       });
     }
@@ -159,7 +174,42 @@ app.post("/login", function(req, res) {
 });
 
 app.post("/search", function(req, res) {
-  res.redirect("/shop");
+  phrase = req.body.q.toLowerCase();
+  switch (phrase) {
+    case "golden oyster mushroom":
+      phrase = "Golden Oyster Mushroom";
+      box_class = "limonka imageContainer";
+      li1 = "a source of lipid-lowering drugs";
+      li2 = "$5.23 USD per kg";
+      display = "display: inline-block;";
+      break;
+
+    case "king oyster mushroom":
+      phrase = "King Oyster Mushroom";
+      box_class = "king imageContainer";
+      li1 = "cholesterol-lowering dietary agent";
+      li2 = "$8.18 USD per kg";
+      display = "display: inline-block;";
+      break;
+
+    case "pink oyster mushroom":
+      phrase = "Pink Oyster Mushroom";
+      box_class = "pink imageContainer";
+      li1 = "delicious and look incredible";
+      li2 = "$7.41 USD per kg";
+      display = "display: inline-block;";
+      break;
+
+    default:
+      display = "display: none;";
+  }
+  res.render("shop_search", {
+    phrase: phrase,
+    box_class: box_class,
+    li1: li1,
+    li2: li2,
+    display: display
+  });
 });
 
 let port = process.env.PORT;

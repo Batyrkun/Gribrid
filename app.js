@@ -339,7 +339,6 @@ app.post("/order_issued", function(req, res) {
       var temp2 = parseInt(orderNumber.orderNumber);
       if (temp2 > ordernumber) {
         ordernumber = temp2;
-        console.log(ordernumber);
       }
     });
     ordernumber = ordernumber + 1;
@@ -355,17 +354,17 @@ app.post("/order_issued", function(req, res) {
       email: email,
       telephone: telephone,
     });
-  });
-  res.render("order_issued", {
-    firstName: fname,
-    lastName: lname,
-    orderNumber: ordernumber,
-    mushroomType: mushroom_type,
-    quantity: quantity,
-    address: address,
-    email: email,
-    telephone: telephone,
-    totalCost: totalCost
+    res.render("order_issued", {
+      firstName: fname,
+      lastName: lname,
+      orderNumber: ordernumber,
+      mushroomType: mushroom_type,
+      quantity: quantity,
+      address: address,
+      email: email,
+      telephone: telephone,
+      totalCost: totalCost
+    });
   });
 });
 

@@ -41,24 +41,26 @@
   <div class="row">
     <% productNamesSortedRating.forEach(myFunction);
       function myFunction(item) { %>
-        <div class="col-lg-4 col-md-6 col-sm-12">
-          <div class="box">
-            <p class="productName"><%= item[0] %></p>
-            <hr>
-            <div class="<%= item[1] %>">
-            </div>
-            <hr>
-            <ul>
-              <li><%= item[2] %></li>
-              <li><%= item[3] %></li>
-            </ul>
-            <hr>
-            <p><%= item[4] %> out of 10</p>
-            <hr>
-            <button type="button" class="btn btn-info btn-lg btnBottom btn-block ">Learn More</button>
-          </div>
+    <div class="col-lg-4 col-md-6 col-sm-12">
+      <div class="box">
+        <p class="productName"><%= item[0] %></p>
+        <hr>
+        <div class="<%= item[1] %>">
         </div>
-      <% } %>
+        <hr>
+        <ul>
+          <li><%= item[2] %></li>
+          <li><%= item[3] %></li>
+        </ul>
+        <hr>
+        <p><%= item[4] %> out of 10</p>
+        <hr>
+        <form action="/order" method="post">
+          <button type="submit" class="btn btn-info btn-lg btnBottom btn-block" name="mushroom_type" value="<%= item[0] %>">Order</button>
+        </form>
+      </div>
+    </div>
+    <% } %>
   </div>
 </div>
 

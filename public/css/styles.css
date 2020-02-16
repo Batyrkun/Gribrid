@@ -128,3 +128,18 @@ height: 60px;
   text-decoration: none;
   cursor: pointer;
 }
+
+.order {
+  font-size: 25px;
+}
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: 1%;
+  font-size: 20px;
+}
+
+.order_issued {
+  margin-left: 6%;
+}

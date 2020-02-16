@@ -1,0 +1,38 @@
+<%- include("partials/header") -%>
+
+<h1>Order</h1>
+</div>
+</div>
+</div>
+
+<div class="container-fluid">
+  <div class="row">
+    <form action="/order_issued" method="post">
+      <label class="order">Mushroom type: <%= mushroom_type %></label><br><br>
+
+      <label class="order">Price: <%= price %></label><br><br>
+
+      <label class="order" for="quantity">Quantity of containers: </label>
+      <input type="text" name="quantity"><br><br>
+
+      <label class="order" for="fname">First name: </label>
+      <input type="text" name="fname"><br><br>
+
+      <label class="order" for="lname">Last name: </label>
+      <input type="text" name="lname"><br><br>
+
+      <label class="order" for="address">Address: </label>
+      <input type="text" name="address"><br><br>
+
+      <label class="order" for="email">Email: </label>
+      <input type="text" name="email"><br><br>
+
+      <label class="order" for="telephone">Telephone number: </label>
+      <input type="text" name="telephone"><br><br>
+
+      <button type="submit" name="mushroom_type" value="<%= mushroom_type %>">Submit</button>
+    </form>
+  </div>
+</div>
+
+<%- include("partials/footer") -%>

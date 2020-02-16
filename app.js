@@ -57,7 +57,7 @@ mongoose.set('useCreateIndex', true);
 const userSchema = new mongoose.Schema({
   email: String,
   password: String,
-  googleId: String
+  googleId: String,
 });
 
 //adding plugins to the schema
@@ -86,10 +86,22 @@ var ratingSchema = new mongoose.Schema({
   rating: Number
 });
 var Rating = new mongoose.model('Rating', ratingSchema);
-var silence = new Rating({
-  name: "King Oyster Mushroom",
-  rating: 6.5
+
+//new db for orders
+var orderSchema = new mongoose.Schema({
+  orderNumber: String,
+  mushroomType: String,
+  quantity: String,
+  totalCost: String,
+  firstName: String,
+  lastName: String,
+  address: String,
+  email: String,
+  telephone: String,
 });
+var Order = new mongoose.model('Order', orderSchema);
+
+var ordernumber = 0;
 
 //variables for searching
 var phrase = "";
@@ -97,15 +109,16 @@ var box_class = "";
 var li1 = "";
 var li2 = "";
 var display = "";
+var price = "";
 
 //array for sorting
 const productNames = [
-  ["Golden Oyster Mushroom", "limonka imageContainer", "a source of lipid-lowering drugs", "$5.23 USD per kg"],
-  ["King Oyster Mushroom", "king imageContainer", "cholesterol-lowering agent", "$8.18 USD per kg"],
-  ["Pink Oyster Mushroom", "pink imageContainer", "delicious and look incredible", "$7.41 USD per kg"]  
+  ["Golden Oyster Mushroom", "limonka imageContainer", "a source of lipid-lowering drugs", "$5 USD per container(200g)"],
+  ["King Oyster Mushroom", "king imageContainer", "cholesterol-lowering agent", "$8 USD per container(200g)"],
+  ["Pink Oyster Mushroom", "pink imageContainer", "delicious and look incredible", "$7 USD per container(200g)"]
 ];
 
-//pushing ratings from mongodb to the array
+//pushing ratings from mongodb to the array for sorting
 productNames.forEach(function(item) {
   Rating.find({
     name: item[0]
@@ -277,6 +290,83 @@ app.post("/sort", function(req, res) {
       productNamesSortedRating: x
     });
   }
+});
+
+app.post("/order", function(req, res) {
+  mushroom_type = req.body.mushroom_type;
+  var temp = mushroom_type.toLowerCase();
+  switch (temp) {
+    case "golden oyster mushroom":
+      price = productNames[0][3];
+      break;
+    case "king oyster mushroom":
+      price = productNames[1][3];
+      break;
+    case "pink oyster mushroom":
+      price = productNames[2][3];
+      break;
+  }
+  res.render("order", {
+    mushroom_type: mushroom_type,
+    price: price
+  });
+});
+
+app.post("/order_issued", function(req, res) {
+  var mushroom_type = req.body.mushroom_type;
+  var quantity = req.body.quantity;
+  var fname = req.body.fname;
+  var lname = req.body.lname;
+  var address = req.body.address;
+  var email = req.body.email;
+  var telephone = req.body.telephone;
+  var temp = mushroom_type.toLowerCase();
+  switch (temp) {
+    case "golden oyster mushroom":
+      price = 5;
+      break;
+    case "king oyster mushroom":
+      price = 8;
+      break;
+    case "pink oyster mushroom":
+      price = 7;
+      break;
+  }
+  var totalCost = price * parseInt(quantity);
+
+  Order.find(function(err, doc) {
+    doc.forEach(function(orderNumber) {
+      var temp2 = parseInt(orderNumber.orderNumber);
+      if (temp2 > ordernumber) {
+        ordernumber = temp2;
+        console.log(ordernumber);
+      }
+    });
+    ordernumber = ordernumber + 1;
+    ordernumber.toString();
+    Order.create({
+      orderNumber: ordernumber,
+      mushroomType: mushroom_type,
+      quantity: quantity,
+      totalCost: totalCost,
+      firstName: fname,
+      lastName: lname,
+      address: address,
+      email: email,
+      telephone: telephone,
+    });
+  });
+  res.render("order_issued", {
+    firstName: fname,
+    lastName: lname,
+    orderNumber: ordernumber,
+    mushroomType: mushroom_type,
+    quantity: quantity,
+    address: address,
+    email: email,
+    telephone: telephone,
+    totalCost: totalCost
+  });
 });
 
 let port = process.env.PORT;

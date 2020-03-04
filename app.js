@@ -9,6 +9,7 @@ const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const findOrCreate = require('mongoose-findorcreate');
+const mysql = require("mysql");
 
 const app = express();
 
@@ -80,13 +81,6 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
-//new db for ratings
-var ratingSchema = new mongoose.Schema({
-  name: String,
-  rating: Number
-});
-var Rating = new mongoose.model('Rating', ratingSchema);
-
 //new db for orders
 var orderSchema = new mongoose.Schema({
   orderNumber: String,
@@ -111,23 +105,39 @@ var li2 = "";
 var display = "";
 var price = "";
 
+/* -------------------------------MYSQL---------------------------------*/
+// const productNames = [];
+//
+// //creating connection with a mysql db
+// const connection = mysql.createConnection({
+//   host: 'localhost',
+//   user: 'root',
+//   password: '',
+//   database: 'gribrid'
+// });
+//
+// //connecting to the mysql db
+// connection.connect((err) => {
+//   if (err) throw err;
+//   console.log('Connected to mysql gribrid db');
+// });
+//
+// connection.query("select product_name, product_class, product_description, product_price, product_rating from product", (err, rows) => {
+//   if (err) throw err;
+//   rows.forEach((row) => {
+//     let temp_productNames = [];
+//     temp_productNames.push(row.product_name, row.product_class, row.product_description, row.product_price, row.product_rating);
+//     productNames.push(temp_productNames);
+//   });
+// });
+/* ---------------------------------------------------------------------*/
+
 //array for sorting
 const productNames = [
-  ["Golden Oyster Mushroom", "limonka imageContainer", "a source of lipid-lowering drugs", "$5 USD per container(200g)"],
-  ["King Oyster Mushroom", "king imageContainer", "cholesterol-lowering agent", "$8 USD per container(200g)"],
-  ["Pink Oyster Mushroom", "pink imageContainer", "delicious and look incredible", "$7 USD per container(200g)"]
+  ["Golden Oyster Mushroom", "limonka imageContainer", "a source of lipid-lowering drugs", "$5 USD per container(200g)", "7.5"],
+  ["King Oyster Mushroom", "king imageContainer", "cholesterol-lowering agent", "$8 USD per container(200g)", "8.0"],
+  ["Pink Oyster Mushroom", "pink imageContainer", "delicious and look incredible", "$7 USD per container(200g)", "6.5"]
 ];
-
-//pushing ratings from mongodb to the array for sorting
-productNames.forEach(function(item) {
-  Rating.find({
-    name: item[0]
-  }, function(err, docs) {
-    docs.forEach(function(doc) {
-      item.push(doc.rating.toString());
-    });
-  });
-});
 
 // Merge Sort Implentation (Recursion)
 function merge (left, right) {
